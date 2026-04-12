@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Select Role{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen flex items-center justify-center bg-slate-950 text-white">
+
+```
+<form method="POST" class="text-center space-y-6">
+    {% csrf_token %}
+
+    <h1 class="text-3xl font-bold">Select your role</h1>
+
+    <div class="flex gap-6 justify-center">
+
+        <button
+            type="submit"
+            name="role"
+            value="student"
+            class="px-6 py-3 bg-indigo-600 rounded-lg hover:bg-indigo-500 transition"
+        >
+            I am a Student
+        </button>
+
+        <button
+            type="submit"
+            name="role"
+            value="company"
+            class="px-6 py-3 bg-green-600 rounded-lg hover:bg-green-500 transition"
+        >
+            I am a Company
+        </button>
+
+    </div>
+
+</form>
+```
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block title %}Accepted Applicants{% endblock %}
+
+{% block content %}
+
+<div class="container mx-auto px-6 py-8">
+
+<h1 class="text-2xl font-bold mb-8">
+Accepted Applicants
+</h1>
+
+{% for internship in internships %}
+
+{% if internship.accepted_apps %}
+
+<!-- JOB BLOCK -->
+<div class="bg-white border rounded-xl p-6 mb-6 shadow">
+
+<h2 class="text-lg font-semibold mb-4">
+{{ internship.title }}
+</h2>
+
+<p class="text-sm text-gray-500 mb-4">
+{{ internship.accepted_apps|length }} accepted applicants
+</p>
+
+<div class="space-y-4">
+
+{% for app in internship.accepted_apps %}
+
+<!-- APPLICANT -->
+<div class="flex items-center justify-between border-b pb-3">
+
+<div>
+
+<p class="font-medium">
+{{ app.student.username }}
+</p>
+
+{% if app.skills %}
+<p class="text-sm text-gray-600">
+Skills: {{ app.skills }}
+</p>
+{% endif %}
+
+<p class="text-xs text-gray-400">
+Accepted {{ app.applied_at|date:"M d, H:i" }}
+</p>
+
+</div>
+
+<div>
+
+{% if app.resume %}
+<a href="{{ app.resume.url }}"
+target="_blank"
+class="text-blue-600 text-sm hover:underline">
+Resume
+</a>
+{% endif %}
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+</div>
+
+{% endif %}
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

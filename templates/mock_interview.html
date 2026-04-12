@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block title %}Mock Interview - Talentrek{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6">
+    <div class="w-full max-w-3xl">
+        <div class="mb-8 text-center">
+            <h1 class="text-3xl font-black text-indigo-400 italic tracking-tighter">AI INTERVIEW ROOM</h1>
+            <p class="text-slate-400">The technical recruiter is ready. Type <span class="text-indigo-400">"Start"</span> to begin your session.</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl h-[550px] flex flex-col overflow-hidden shadow-2xl">
+            <div id="interview-box" class="flex-1 overflow-y-auto p-6 space-y-6 scroll-smooth">
+                <div class="flex flex-col items-start">
+                    <div class="bg-indigo-600/20 border border-indigo-500/30 p-4 rounded-2xl rounded-tl-none text-sm max-w-[85%] leading-relaxed">
+                        Hello, <strong>{{ request.user.username }}</strong>. I am your AI Technical Interviewer. I have analyzed your profile and the internship requirements. Shall we begin the technical assessment?
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-4 bg-slate-800/40 border-t border-slate-800 flex gap-3">
+                <input id="user-input" type="text" placeholder="Type your response here..." 
+                       class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                       onkeypress="handleKeyPress(event)">
+                
+                <button onclick="sendAnswer()" id="send-btn" class="bg-indigo-600 px-6 py-2 rounded-xl font-bold hover:bg-indigo-500 active:scale-95 transition-all flex items-center justify-center">
+                    <span>Submit</span>
+                </button>
+            </div>
+        </div>
+        <p class="mt-4 text-center text-xs text-slate-500">Powered by Gemini AI • Real-time Technical Assessment</p>
+    </div>
+</div>
+
+<script>
+// Scroll to bottom helper
+function scrollToBottom() {
+    const box = document.getElementById("interview-box");
+    box.scrollTop = box.scrollHeight;
+}
+
+// Support for Enter Key
+function handleKeyPress(e) {
+    if (e.key === "Enter") {
+        sendAnswer();
+    }
+}
+
+function sendAnswer() {
+    const input = document.getElementById("user-input");
+    const btn = document.getElementById("send-btn");
+    const msg = input.value.trim();
+    
+    if (!msg) return;
+
+    const box = document.getElementById("interview-box");
+
+    // 1. Add User Message to UI
+    box.innerHTML += `
+        <div class="flex flex-col items-end animate-in fade-in slide-in-from-right-4 duration-300">
+            <div class="bg-indigo-600 p-4 rounded-2xl rounded-tr-none text-sm max-w-[85%] shadow-lg">
+                ${msg}
+            </div>
+        </div>
+    `;
+
+    // Clear input and block button while AI thinks
+    input.value = "";
+    btn.disabled = true;
+    btn.innerText = "...";
+    scrollToBottom();
+
+    // 2. Send to Backend
+    // CRITICAL FIX: Pointing to 'chatbot' URL instead of 'mock_interview'
+    fetch("{% url 'chatbot' %}", {
+        method: "POST",
+        headers: { 
+            "Content-Type": "application/json", 
+            "X-CSRFToken": "{{ csrf_token }}" 
+        },
+        body: JSON.stringify({ message: msg })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+    })
+    .then(data => {
+        // 3. Add AI Response to UI
+        box.innerHTML += `
+            <div class="flex flex-col items-start animate-in fade-in slide-in-from-left-4 duration-300">
+                <div class="bg-slate-800 border border-slate-700 p-4 rounded-2xl rounded-tl-none text-sm max-w-[85%] leading-relaxed shadow-md">
+                    ${data.reply}
+                </div>
+            </div>
+        `;
+        scrollToBottom();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        box.innerHTML += `
+            <div class="text-center text-red-400 text-xs mt-2">
+                Connection lost. Please check your internet or terminal.
+            </div>
+        `;
+    })
+    .finally(() => {
+        btn.disabled = false;
+        btn.innerText = "Submit";
+    });
+}
+</script>
+{% endblock %}

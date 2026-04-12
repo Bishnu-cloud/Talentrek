@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+
+{% block title %}Post New Project | Talentrek{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+<div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans pb-24 transition-colors duration-300">
+    
+    <header class="bg-white/90 dark:bg-slate-950/90 border-b border-slate-200 dark:border-slate-800/60 sticky top-0 z-50 backdrop-blur-xl">
+        <div class="max-w-[1440px] mx-auto px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-6">
+                <a href="{% url 'home' %}" class="flex items-center gap-3 group">
+                    <div class="h-9 w-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-lg group-hover:rotate-12 transition-transform">
+                        <span class="material-symbols-outlined !text-xl">rocket_launch</span>
+                    </div>
+                    <span class="font-black text-lg tracking-tighter text-slate-900 dark:text-white uppercase">Talentrek</span>
+                </a>
+                <div class="h-4 w-px bg-slate-200 dark:bg-slate-800 hidden md:block"></div>
+                <span class="hidden md:block text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">Mission Control</span>
+            </div>
+            
+            <a href="{% url 'dashboard' %}" class="group flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-indigo-600 transition-colors">
+                <span class="material-symbols-outlined !text-lg group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                Return to Dashboard
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-8 py-16">
+        
+        {% if messages %}
+        <div class="mb-10 space-y-3 animate__animated animate__shakeX">
+            {% for message in messages %}
+            <div class="p-5 rounded-2xl text-[10px] font-black uppercase tracking-[0.15em] flex items-center gap-4 shadow-sm {% if message.tags == 'error' %}bg-rose-50 text-rose-600 border border-rose-200/50{% else %}bg-emerald-50 text-emerald-600 border border-emerald-200/50{% endif %}">
+                <span class="material-symbols-outlined">{% if message.tags == 'error' %}error{% else %}check_circle{% endif %}</span>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <div class="mb-12 animate__animated animate__fadeInDown">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="text-indigo-600 dark:text-indigo-400 text-[10px] font-black uppercase tracking-[0.4em] px-4 py-1.5 bg-indigo-600/5 rounded-full border border-indigo-600/10">Project Setup</span>
+                <div class="h-px w-12 bg-slate-200 dark:bg-slate-800"></div>
+            </div>
+            <h1 class="text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-none mb-4">Post New Project</h1>
+            <p class="text-slate-500 dark:text-slate-400 text-lg font-medium max-w-xl">Define the scope, requirements, and rewards for your next engineering initiative.</p>
+        </div>
+
+        <form method="post" class="space-y-10 animate__animated animate__fadeInUp">
+            {% csrf_token %}
+
+            <div class="bg-white dark:bg-[#0f172a]/40 border border-slate-200 dark:border-slate-800 rounded-[3rem] p-10 md:p-16 shadow-2xl dark:shadow-none relative overflow-hidden group transition-all">
+                
+                <span class="material-symbols-outlined absolute -right-12 -top-12 !text-[15rem] text-slate-50 dark:text-slate-800/10 pointer-events-none rotate-12 transition-transform group-hover:rotate-[20deg] duration-700">post_add</span>
+
+                <div class="relative z-10 space-y-10">
+                    
+                    <div class="space-y-4">
+                        <label class="text-[11px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.2em] ml-1 flex items-center gap-2">
+                            <span class="h-1.5 w-1.5 rounded-full bg-indigo-500"></span>
+                            Project Nomenclature
+                        </label>
+                        {{ form.title }}
+                        {% if form.title.errors %}<p class="text-rose-500 text-[10px] font-bold mt-2 ml-1 uppercase tracking-widest">{{ form.title.errors.0 }}</p>{% endif %}
+                    </div>
+
+                    <div class="space-y-4">
+                        <label class="text-[11px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.2em] ml-1 flex items-center gap-2">
+                            <span class="h-1.5 w-1.5 rounded-full bg-indigo-500"></span>
+                            Mission Briefing
+                        </label>
+                        {{ form.description }}
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-8 border-t border-slate-100 dark:border-slate-800/50">
+                        <div class="space-y-3">
+                            <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Primary Discipline</label>
+                            {{ form.primary_role }}
+                        </div>
+                        <div class="space-y-3">
+                            <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Engagement Type</label>
+                            {{ form.type_of_position }}
+                        </div>
+                        <div class="space-y-3">
+                            <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Seniority Required</label>
+                            {{ form.work_experience }}
+                        </div>
+                        <div class="space-y-3">
+                            <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Operational Base (Location)</label>
+                            {{ form.location }}
+                        </div>
+
+                        <div class="space-y-4 md:col-span-2 bg-slate-50/50 dark:bg-slate-900/50 p-6 rounded-3xl border border-slate-100 dark:border-slate-800/50">
+                            <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] flex items-center gap-2">
+                                <span class="material-symbols-outlined !text-sm">payments</span>
+                                Monthly Stipend Range (INR ₹)
+                            </label>
+                            <div class="flex flex-col md:flex-row items-center gap-6">
+                                <div class="flex-1 w-full">
+                                    {{ form.min_salary }}
+                                    {% if form.min_salary.errors %}<p class="text-rose-500 text-[9px] font-bold mt-2 ml-1 uppercase">{{ form.min_salary.errors.0 }}</p>{% endif %}
+                                </div>
+                                <span class="text-slate-300 dark:text-slate-700 font-black text-[10px] uppercase tracking-widest">to</span>
+                                <div class="flex-1 w-full">
+                                    {{ form.max_salary }}
+                                    {% if form.max_salary.errors %}<p class="text-rose-500 text-[9px] font-bold mt-2 ml-1 uppercase">{{ form.max_salary.errors.0 }}</p>{% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Equity Offering (%)</label>
+                            {{ form.equity }}
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <label class="text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-widest ml-1">Team Scale</label>
+                            {{ form.company_size }}
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 pt-8 border-t border-slate-100 dark:border-slate-800/50">
+                        <label class="text-[11px] font-black text-indigo-600 dark:text-indigo-400 uppercase tracking-[0.2em] ml-1 flex items-center gap-2">
+                            <span class="material-symbols-outlined !text-sm">terminal</span>
+                            Required Tech Stack
+                        </label>
+                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest ml-1">Enter skills separated by commas (e.g. Django, Tailwind, React)</p>
+                        {{ form.skills_required }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col items-center gap-6 pt-6">
+                <button type="submit" class="group relative flex items-center justify-center gap-4 bg-indigo-600 text-white w-full md:w-auto px-16 py-6 rounded-[2rem] font-black uppercase tracking-[0.3em] text-xs hover:bg-indigo-500 hover:shadow-[0_20px_50px_rgba(79,70,229,0.3)] transition-all duration-300 active:scale-95 overflow-hidden">
+                    <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    
+                    <span class="material-symbols-outlined !text-xl group-hover:rotate-12 group-hover:scale-110 transition-transform">send</span>
+                    Publish Opportunity
+                </button>
+                <div class="flex items-center gap-4 text-slate-400 dark:text-slate-700">
+                    <div class="h-px w-8 bg-current"></div>
+                    <span class="text-[9px] font-black uppercase tracking-[0.4em]">Live deployment pending</span>
+                    <div class="h-px w-8 bg-current"></div>
+                </div>
+            </div>
+        </form>
+    </main>
+</div>
+
+<style>
+    /* Targeting Django's auto-generated form inputs */
+    input, textarea, select {
+        width: 100% !important;
+        padding: 1.25rem 1.5rem !important;
+        border-radius: 1.25rem !important;
+        font-weight: 700 !important;
+        font-size: 0.9rem !important;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        outline: none !important;
+        background-color: #ffffff !important;
+        border: 2px solid #f1f5f9 !important;
+        color: #0f172a !important;
+    }
+
+    .dark input, .dark textarea, .dark select {
+        background-color: #030712 !important;
+        border: 2px solid #1e293b !important;
+        color: #f1f5f9 !important;
+    }
+
+    input:focus, textarea:focus, select:focus {
+        border-color: #4f46e5 !important;
+        background-color: #ffffff !important;
+        box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.1) !important;
+        transform: translateY(-2px);
+    }
+
+    .dark input:focus, .dark textarea:focus, .dark select:focus {
+        background-color: #030712 !important;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    textarea { 
+        min-height: 180px !important; 
+        line-height: 1.6 !important;
+    }
+
+    ::placeholder { 
+        color: #94a3b8 !important; 
+        font-weight: 500 !important;
+    }
+    
+    .dark ::placeholder { 
+        color: #334155 !important; 
+    }
+
+    /* Remove default appearance for select on mobile */
+    select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='F19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1.5rem center;
+        background-size: 1.25rem;
+    }
+</style>
+{% endblock %}

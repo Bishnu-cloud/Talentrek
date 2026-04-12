@@ -1,0 +1,710 @@
+{% extends "base.html" %}
+ 
+{% block title %}Talentrek - Connect Talent with Opportunity{% endblock %}
+ 
+{% block content %}
+ 
+<style>
+  .gradient-bg {
+    background-image:
+      radial-gradient(at 27% 37%, hsla(243, 98%, 61%, 0.15) 0px, transparent 50%),
+      radial-gradient(at 97% 21%, hsla(145, 98%, 72%, 0.15) 0px, transparent 50%),
+      radial-gradient(at 52% 99%, hsla(345, 98%, 72%, 0.15) 0px, transparent 50%),
+      radial-gradient(at 10% 29%, hsla(286, 96%, 68%, 0.15) 0px, transparent 50%),
+      radial-gradient(at 97% 96%, hsla(38, 60%, 74%, 0.15) 0px, transparent 50%),
+      radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 0.15) 0px, transparent 50%),
+      radial-gradient(at 79% 53%, hsla(323, 68%, 79%, 0.15) 0px, transparent 50%);
+  }
+ 
+  /* ── Keyframes ── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.88); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-40px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(40px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-8px); }
+  }
+  @keyframes gradientShift {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes pulse-ring {
+    0%   { box-shadow: 0 0 0 0 rgba(99,102,241,0.4); }
+    70%  { box-shadow: 0 0 0 14px rgba(99,102,241,0); }
+    100% { box-shadow: 0 0 0 0 rgba(99,102,241,0); }
+  }
+  @keyframes shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position:  200% center; }
+  }
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
+  @keyframes bounceDot {
+    0%, 80%, 100% { transform: translateY(0); }
+    40%            { transform: translateY(-6px); }
+  }
+  @keyframes waveIn {
+    0%   { clip-path: inset(0 100% 0 0); }
+    100% { clip-path: inset(0 0% 0 0); }
+  }
+  @keyframes numberCount {
+    from { opacity: 0; transform: translateY(10px) scale(0.8); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+ 
+  /* ── Scroll-reveal base ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.65s cubic-bezier(.22,1,.36,1),
+                transform 0.65s cubic-bezier(.22,1,.36,1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-left {
+    opacity: 0;
+    transform: translateX(-36px);
+    transition: opacity 0.65s cubic-bezier(.22,1,.36,1),
+                transform 0.65s cubic-bezier(.22,1,.36,1);
+  }
+  .reveal-left.visible { opacity: 1; transform: translateX(0); }
+  .reveal-scale {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.55s cubic-bezier(.22,1,.36,1),
+                transform 0.55s cubic-bezier(.22,1,.36,1);
+  }
+  .reveal-scale.visible { opacity: 1; transform: scale(1); }
+ 
+  /* ── Stagger helpers ── */
+  .stagger-1 { transition-delay: 0.05s !important; }
+  .stagger-2 { transition-delay: 0.13s !important; }
+  .stagger-3 { transition-delay: 0.21s !important; }
+  .stagger-4 { transition-delay: 0.29s !important; }
+  .stagger-5 { transition-delay: 0.37s !important; }
+  .stagger-6 { transition-delay: 0.45s !important; }
+ 
+  /* ── Nav ── */
+  .nav-link {
+    position: relative;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -3px;
+    width: 0; height: 2px;
+    background: #6366f1;
+    transition: width 0.3s ease;
+    border-radius: 2px;
+  }
+  .nav-link:hover::after { width: 100%; }
+ 
+  /* ── Hero text gradient animated ── */
+  .hero-gradient-text {
+    background: linear-gradient(90deg, #a855f7, #6366f1, #818cf8, #a855f7);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 4s linear infinite;
+  }
+ 
+  /* ── Hero entry ── */
+  .hero-title   { animation: fadeInUp 0.8s cubic-bezier(.22,1,.36,1) 0.15s both; }
+  .hero-sub     { animation: fadeInUp 0.8s cubic-bezier(.22,1,.36,1) 0.35s both; }
+  .hero-cta     { animation: fadeInUp 0.8s cubic-bezier(.22,1,.36,1) 0.55s both; }
+  .nav-entry    { animation: fadeInDown 0.6s cubic-bezier(.22,1,.36,1) 0.05s both; }
+ 
+  /* ── Logo icon float ── */
+  .logo-icon { animation: float 3.5s ease-in-out infinite; }
+ 
+  /* ── CTA button shimmer ── */
+  .btn-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0; left: -75%;
+    width: 50%; height: 100%;
+    background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.25) 50%, transparent 100%);
+    transform: skewX(-20deg);
+    transition: left 0s;
+  }
+  .btn-shimmer:hover::after {
+    left: 150%;
+    transition: left 0.55s ease;
+  }
+ 
+  /* ── Company logos ── */
+  .logo-img {
+    transition: filter 0.3s ease, opacity 0.3s ease, transform 0.3s ease;
+  }
+  .logo-img:hover {
+    filter: none !important;
+    opacity: 1 !important;
+    transform: scale(1.08);
+  }
+ 
+  /* ── Internship cards ── */
+  .intern-card {
+    transition: box-shadow 0.35s ease, border-color 0.35s ease, transform 0.35s cubic-bezier(.22,1,.36,1);
+  }
+  .intern-card:hover { transform: translateY(-8px) scale(1.012); }
+ 
+  /* ── Skill tag pop ── */
+  .skill-tag {
+    transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+  .skill-tag:hover {
+    background: #6366f1 !important;
+    color: #fff !important;
+    transform: scale(1.07);
+  }
+ 
+  /* ── Feature cards ── */
+  .feature-card {
+    transition: box-shadow 0.35s ease, border-color 0.35s ease, transform 0.35s cubic-bezier(.22,1,.36,1);
+  }
+  .feature-icon {
+    transition: transform 0.4s cubic-bezier(.34,1.56,.64,1), background 0.3s ease;
+  }
+  .feature-card:hover .feature-icon {
+    transform: scale(1.18) rotate(-6deg);
+    background: #6366f1 !important;
+    color: #fff !important;
+  }
+  .feature-card:hover .feature-icon * { color: #fff; }
+ 
+  /* ── Step circles ── */
+  .step-circle {
+    transition: transform 0.35s cubic-bezier(.34,1.56,.64,1), box-shadow 0.35s ease;
+  }
+  .step-circle:hover {
+    transform: scale(1.12);
+    animation: pulse-ring 1.2s ease-out;
+  }
+ 
+  /* ── Testimonial cards ── */
+  .testi-card {
+    transition: transform 0.35s cubic-bezier(.22,1,.36,1), box-shadow 0.35s ease;
+  }
+  .testi-card:hover {
+    transform: translateY(-10px) scale(1.012);
+    box-shadow: 0 24px 48px -12px rgba(99,102,241,0.18);
+  }
+  .testi-avatar {
+    transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+  }
+  .testi-card:hover .testi-avatar { transform: scale(1.1) rotate(3deg); }
+ 
+  /* ── Quote icon bounce ── */
+  .quote-icon {
+    transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+  }
+  .testi-card:hover .quote-icon { transform: scale(1.2) translateY(-3px); }
+ 
+  /* ── CTA section ── */
+  .cta-btn-white {
+    transition: background 0.25s ease, transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s ease;
+  }
+  .cta-btn-white:hover {
+    transform: scale(1.06);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+  }
+ 
+  /* ── Footer link underline ── */
+  .footer-link {
+    position: relative;
+    display: inline-block;
+  }
+  .footer-link::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: -1px;
+    width: 0; height: 1px;
+    background: #6366f1;
+    transition: width 0.25s ease;
+  }
+  .footer-link:hover::after { width: 100%; }
+ 
+  /* ── Dashed line draw ── */
+  .dashed-line {
+    opacity: 0;
+    transition: opacity 0.8s ease 0.3s;
+  }
+  .dashed-line.visible { opacity: 1; }
+ 
+  /* ── Theme toggle spin ── */
+  #theme-toggle:hover #theme-icon {
+    animation: spin-slow 0.5s ease;
+  }
+ 
+  /* ── "View all" button ── */
+  .view-all-btn {
+    transition: background 0.25s ease, transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s ease;
+  }
+  .view-all-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 24px rgba(99,102,241,0.15);
+  }
+ 
+  /* ── Floating orbs in hero background ── */
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+    animation: float 6s ease-in-out infinite;
+  }
+  .orb-1 { width: 320px; height: 320px; background: rgba(99,102,241,0.12); top: -80px; right: -80px; animation-delay: 0s; }
+  .orb-2 { width: 240px; height: 240px; background: rgba(168,85,247,0.10); bottom: -40px; left: -40px; animation-delay: 2s; }
+  .orb-3 { width: 180px; height: 180px; background: rgba(52,211,153,0.08); top: 30%; left: 20%; animation-delay: 1s; }
+</style>
+ 
+<div class="w-full">
+ 
+  <header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-lg border-b border-slate-200/60 dark:border-slate-800/60 nav-entry">
+    <nav class="container mx-auto flex items-center justify-between whitespace-nowrap px-6 py-4">
+      <div class="flex items-center gap-3 text-slate-900 dark:text-white">
+        <div class="h-10 w-10 text-indigo-500 flex items-center justify-center logo-icon">
+          <svg class="h-full w-full" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M231.32,80.68,144,32.35a16,16,0,0,0-16,0L40.68,80.68A16,16,0,0,0,32,94.63v86.74a16,16,0,0,0,8.68,13.95l87.33,48.33a16,16,0,0,0,16,0l87.33-48.33A16,16,0,0,0,224,181.37V94.63A16,16,0,0,0,231.32,80.68ZM128,47,209.32,94.63,128,142.26,46.68,94.63ZM48,110.8,128,158l80-47.2V181.2L128,228,48,181.37Zm80,62.86L206.59,128,128,82.34,49.41,128Z"/>
+          </svg>
+        </div>
+        <h2 class="text-2xl font-bold tracking-tight">Talentrek</h2>
+      </div>
+ 
+      <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600 dark:text-slate-300">
+        <a class="nav-link hover:text-indigo-500 transition-colors" href="{% url 'internship_list' %}">For Students</a>
+        <a class="nav-link hover:text-indigo-500 transition-colors" href="{% url 'register' %}">For Companies</a>
+        <a class="nav-link hover:text-indigo-500 transition-colors" href="#how-it-works">About Us</a>
+      </div>
+ 
+      <div class="flex items-center gap-2">
+        {% if user.is_authenticated %}
+          <a href="{% url 'dashboard' %}"
+             class="flex min-w-[84px] items-center justify-center rounded-full h-10 px-5 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-sm font-semibold tracking-wide border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors btn-shimmer">
+            Dashboard
+          </a>
+          <a href="{% url 'logout' %}"
+             class="flex min-w-[84px] items-center justify-center rounded-full h-10 px-5 bg-indigo-500 text-white text-sm font-semibold tracking-wide hover:bg-indigo-600 transition-colors shadow-sm shadow-indigo-500/20 btn-shimmer">
+            Logout
+          </a>
+        {% else %}
+          <a href="{% url 'login' %}"
+             class="flex min-w-[84px] items-center justify-center rounded-full h-10 px-5 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-sm font-semibold tracking-wide border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors btn-shimmer">
+            Log In
+          </a>
+          <a href="{% url 'register' %}"
+             class="flex min-w-[84px] items-center justify-center rounded-full h-10 px-5 bg-indigo-500 text-white text-sm font-semibold tracking-wide hover:bg-indigo-600 transition-colors shadow-sm shadow-indigo-500/20 btn-shimmer">
+            Sign Up
+          </a>
+        {% endif %}
+ 
+        <button id="theme-toggle"
+                class="ml-2 h-10 w-10 rounded-full flex items-center justify-center bg-slate-200 dark:bg-slate-800 shadow-sm transition-transform hover:scale-110 active:scale-95">
+          <span id="theme-icon" class="material-symbols-outlined text-slate-700 dark:text-slate-200">
+            dark_mode
+          </span>
+        </button>
+      </div>
+    </nav>
+  </header>
+ 
+  <main>
+ 
+    <section class="relative overflow-hidden gradient-bg">
+      <!-- Floating orbs -->
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+ 
+      <div class="container mx-auto px-6 pt-24 pb-32 md:pt-32 md:pb-40">
+        <div class="max-w-4xl text-center mx-auto">
+          <h1 class="hero-title text-5xl md:text-7xl font-black leading-tight tracking-tighter text-slate-900 dark:text-white">
+            Launch Your Career,
+            <span class="hero-gradient-text">
+              Not Just Your Resume.
+            </span>
+          </h1>
+          <p class="hero-sub mt-6 text-lg md:text-xl font-normal text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+            Ditch the coffee runs. Get paid to tackle real-world projects from top companies and build a portfolio
+            that actually gets you hired.
+          </p>
+          <div class="hero-cta mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'internship_list' %}"
+               class="group flex cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full h-14 px-8 bg-indigo-600 text-white text-base font-bold tracking-wide hover:bg-indigo-700 transition-transform duration-300 ease-in-out hover:scale-105 shadow-lg shadow-indigo-500/40 btn-shimmer">
+              <span class="truncate">Find Your Gig</span>
+              <span class="material-symbols-outlined transition-transform duration-300 ease-in-out group-hover:translate-x-1">arrow_forward</span>
+            </a>
+            <a href="{% url 'register' %}"
+               class="flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm text-slate-700 dark:text-slate-200 text-base font-bold tracking-wide border border-slate-200/50 dark:border-slate-700/50 hover:bg-white dark:hover:bg-slate-800 transition-all duration-300 ease-in-out hover:scale-105 btn-shimmer">
+              <span class="truncate">I'm a Company</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+ 
+    <section class="bg-white dark:bg-slate-950 py-16">
+      <div class="container mx-auto px-6">
+        <h3 class="reveal text-center text-sm font-semibold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-10">
+          Companies You Could Be Working With
+        </h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-8 gap-y-10 items-center">
+          <img class="logo-img reveal stagger-1 h-8 mx-auto grayscale opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNtdlMpGpcBMu4rNAKajkBWwoUYHUUix3vHPEPqmOfsjAwyD3mKQu3H_qFZwcBQ4OU_DEMT9K2FkI8a8Sb39NL8oWTzrh_NykFEP4Ymaug3bb2Zc1eDWrHpsASR3xp90nDNdM10luEOhiRk0Hl-Xxe5b5mq0-VQXE-YqfxjODUSo9mzK_hUglj4-joktjkXdKf-hVX7byYcrZR9Ua2_XyMv0y0fQ-AFABoE-ggGzIThyW_Xyq76njVXcglaHr0QHe80Wz2wxOI7NL3"/>
+          <img class="logo-img reveal stagger-2 h-8 mx-auto grayscale opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBq7wc989j33PT3VlSruR-w3Bunxy4af4ziOCi-YpdvV9QK1BmtduI_MPLy-P8n9-FJPsm5O1PUQ3PK43NHppQbPcxP1tQUNG1391x4Xh_LQsAPaHEAyJFOrdy_M1SZJYhLfs9p41zqW3c-HfhVIySliwUTl_GKe684FYOhDGrAXWGVWO7PbbHY0gIPcyFdKX3D0HusQQNgg7OjP6dBnfUlFpWq6ZDQ6MNWIqbC19ad7JkQubV8Reb8kDjBNXqhOS0V00aTZGRFr7jM"/>
+          <img class="logo-img reveal stagger-3 h-8 mx-auto grayscale opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcNKR-KBLNJz1THRJGXpovqOHfwdQOCmoSNyS9KJpT4mS57ONnrgs4qt6DYzwhEVWTcI9N_Fp2ZvU67jHg9eRoFfdf39aIufMCNu3KV5rzmN-X6LuUwIujJwsZZjlKUha4cwK_WdixcXOHfuj8huEzNxY-QZkA9BAYEwqDqXi6e1bxYQFn032NUMF-l55uojKnAPSn5hiERPxO2kbsvSCNH7dRz2x-UdO5BCmedWyFd2chS-pfEub6KeZzL4Wo2qKE_o0IT3WmyslO"/>
+          <img class="logo-img reveal stagger-4 h-8 mx-auto grayscale opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANe83qJXnmKWm1Aawmdr4K7b3_krt3fBvX98Vih0weyZ3b8zPnKghjVkfqDOK-077eRHoOt_cnE0-cw_bFohqXP-dRNqiCJ7bCOYGMonPYKNuXGpBNyJWzsgkh8qrnomuJldTE50GS7Nnr7fB8Oi6DCDPslGig_cykgXYEwthhQEZorCpVibHl79Nq33cRAdPQg0M2TQ3fd3ILLrAVigG6jSwaU9-n22njMiboZMHjul0HHxpAH7G1GHxZp1j7ypOKhNWOQgwSgz1E"/>
+          <img class="logo-img reveal stagger-5 h-8 mx-auto grayscale opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7BlndPifpkuV_KNIl7KTIJ-R-MqahI8D9QGiz0Op6OQJjzNZ-v1iem4-QpgeDOHY6z6DZkVYYOBElwtwT7o9bdpZowGmzqmt7nO4E66fdT-K07tX4WEKZwJ5EpsgN9pFyfdFr4JkNe0QjkkHC-StI1n7DqIQ8PuuPVJsK6TAWxTUdBZgSangTW7wWky2DIlU5tXjLfyTQgQrqN_6OYgUVcJbp6ideft1Ajyn8fEY6eyHmE026IiS5vrztr_7MbzyJd4KX1_dMSZbw"/>
+          <img class="logo-img reveal stagger-6 h-8 mx-auto grayscale opacity-60" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC6Q6rz0UqDpPb5zJTbJEJG7RWrCddw--0Zj29zZkixd3BAkSt_Sqc7FHYytf5Q37IlJr6QEJO6MHGpqe4kxMox1bRVh_k0Llpj3K_rIf_sQHNAEXnSRWHNgEmEcpgLY5iZGkdt-4M0rb2LlGVczc8EAS7lzLH9UHd4O1N6zZagbQeSlQODT47jN-ri89eCuWjmR4wBU77NLyVA5NVnGMxso5JMFYYeAkfoI3oD7E0qdS5q7zBD_YscNnsDm0wwkENhVPirxiiWGtaj"/>
+        </div>
+      </div>
+    </section>
+ 
+    <section class="py-20 md:py-24 bg-slate-50 dark:bg-slate-900">
+      <div class="container mx-auto px-6">
+        <div class="max-w-2xl mx-auto text-center mb-10">
+          <h2 class="reveal text-3xl md:text-4xl font-extrabold leading-tight tracking-tight text-slate-900 dark:text-white">
+            Latest Micro-Internships
+          </h2>
+          <p class="reveal stagger-1 mt-3 text-base md:text-lg text-slate-600 dark:text-slate-400">
+            Fresh opportunities currently live on Talentrek.
+          </p>
+        </div>
+ 
+        {% if internships %}
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for i in internships %}
+              <a href="{% url 'internship_detail' i.pk %}"
+                 class="intern-card reveal flex flex-col gap-3 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-6 text-left hover:shadow-2xl hover:border-indigo-500/50 dark:hover:border-indigo-500/50">
+                <div class="flex items-center justify-between gap-2">
+                  <h3 class="text-lg font-bold leading-tight text-slate-900 dark:text-white">
+                    {{ i.title }}
+                  </h3>
+                  {% if i.is_remote %}
+                    <span class="text-xs font-semibold px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300 transition-transform hover:scale-105">
+                      Remote
+                    </span>
+                  {% endif %}
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400">
+                  {{ i.company.username }} · {{ i.duration_weeks }} week(s)
+                </p>
+                <p class="text-sm text-slate-600 dark:text-slate-400 line-clamp-3">
+                  {{ i.description|truncatechars:140 }}
+                </p>
+ 
+                {% if i.skill_list %}
+                  <div class="mt-3 flex flex-wrap gap-2 text-xs">
+                    {% for skill in i.skill_list %}
+                      <span class="skill-tag px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
+                        {{ skill }}
+                      </span>
+                    {% endfor %}
+                  </div>
+                {% endif %}
+ 
+                <div class="mt-4 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                  <span>
+                    {% if i.stipend %}
+                      ₹{{ i.stipend }} stipend
+                    {% else %}
+                      Paid opportunity
+                    {% endif %}
+                  </span>
+                  {% if i.deadline %}
+                    <span>Apply by {{ i.deadline }}</span>
+                  {% endif %}
+                </div>
+              </a>
+            {% endfor %}
+          </div>
+ 
+          <div class="mt-8 text-center reveal">
+            <a href="{% url 'internship_list' %}"
+               class="view-all-btn inline-flex items-center justify-center rounded-full h-11 px-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-sm font-semibold text-slate-800 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800">
+              View all opportunities
+            </a>
+          </div>
+        {% else %}
+          <p class="reveal text-center text-slate-600 dark:text-slate-400">
+            No micro-internships posted yet. Check back soon!
+          </p>
+        {% endif %}
+      </div>
+    </section>
+ 
+    <section class="py-20 md:py-28 bg-slate-50 dark:bg-slate-900" id="how-it-works">
+      <div class="container mx-auto px-6">
+        <div class="max-w-2xl mx-auto text-center mb-16">
+          <h2 class="reveal text-3xl md:text-5xl font-extrabold leading-tight tracking-tight text-slate-900 dark:text-white">
+            Your Career Superpowers
+          </h2>
+          <p class="reveal stagger-1 mt-4 text-base md:text-lg text-slate-600 dark:text-slate-400">
+            Level up with skills that matter. Here's what you gain.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="feature-card reveal stagger-1 flex flex-col gap-3 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-8 text-left hover:shadow-2xl hover:border-indigo-500/50 dark:hover:border-indigo-500/50 hover:-translate-y-2">
+            <div class="feature-icon flex items-center justify-center h-14 w-14 rounded-xl bg-indigo-100 dark:bg-indigo-500/10 text-indigo-500 mb-4">
+              <svg class="h-8 w-8" fill="currentColor" viewBox="0 0 256 256">
+                <path d="M231.32,80.68,144,32.35a16,16,0,0,0-16,0L40.68,80.68A16,16,0,0,0,32,94.63v86.74a16,16,0,0,0,8.68,13.95l87.33,48.33a16,16,0,0,0,16,0l87.33-48.33A16,16,0,0,0,224,181.37V94.63A16,16,0,0,0,231.32,80.68ZM128,47,209.32,94.63,128,142.26,46.68,94.63ZM48,110.8,128,158l80-47.2V181.2L128,228,48,181.37Zm80,62.86L206.59,128,128,82.34,49.41,128Z"/>
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold leading-tight text-slate-900 dark:text-white">Real-World XP</h3>
+            <p class="text-sm font-normal leading-relaxed text-slate-600 dark:text-slate-400">
+              Apply your studies to actual business challenges. No hypotheticals, just real impact.
+            </p>
+          </div>
+ 
+          <div class="feature-card reveal stagger-2 flex flex-col gap-3 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-8 text-left hover:shadow-2xl hover:border-indigo-500/50 dark:hover:border-indigo-500/50 hover:-translate-y-2">
+            <div class="feature-icon flex items-center justify-center h-14 w-14 rounded-xl bg-indigo-100 dark:bg-indigo-500/10 text-indigo-500 mb-4">
+              <span class="material-symbols-outlined !text-4xl">connect_without_contact</span>
+            </div>
+            <h3 class="text-xl font-bold leading-tight text-slate-900 dark:text-white">Build Your Squad</h3>
+            <p class="text-sm font-normal leading-relaxed text-slate-600 dark:text-slate-400">
+              Connect with industry pros, get legit mentorship, and grow your network beyond your campus.
+            </p>
+          </div>
+ 
+          <div class="feature-card reveal stagger-3 flex flex-col gap-3 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 p-8 text-left hover:shadow-2xl hover:border-indigo-500/50 dark:hover:border-indigo-500/50 hover:-translate-y-2">
+            <div class="feature-icon flex items-center justify-center h-14 w-14 rounded-xl bg-indigo-100 dark:bg-indigo-500/10 text-indigo-500 mb-4">
+              <span class="material-symbols-outlined !text-4xl">payments</span>
+            </div>
+            <h3 class="text-xl font-bold leading-tight text-slate-900 dark:text-white">Get Paid, Get Ahead</h3>
+            <p class="text-sm font-normal leading-relaxed text-slate-600 dark:text-slate-400">
+              Earn money while you learn. All micro-internships on Talentrek are paid opportunities.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+ 
+    <section class="py-20 md:py-28">
+      <div class="container mx-auto px-6">
+        <div class="max-w-2xl mx-auto text-center mb-16">
+          <h2 class="reveal text-3xl md:text-5xl font-extrabold leading-tight tracking-tight text-slate-900 dark:text-white">
+            The Lowdown: How It Works
+          </h2>
+          <p class="reveal stagger-1 mt-4 text-base md:text-lg text-slate-600 dark:text-slate-400">
+            Simple, fast, and built for you. No corporate hoops to jump through.
+          </p>
+        </div>
+        <div class="relative grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16">
+          <div class="hidden md:block dashed-line absolute top-1/2 left-0 w-full h-px -translate-y-10 border-t-2 border-dashed border-slate-300 dark:border-slate-700"></div>
+ 
+          <div class="relative flex flex-col items-center text-center reveal stagger-1">
+            <div class="step-circle flex items-center justify-center h-20 w-20 rounded-full bg-slate-100 dark:bg-slate-800 text-indigo-500 mb-6 z-10 border-4 border-white dark:border-slate-950">
+              <span class="text-4xl font-black">1</span>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Find Your Vibe</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
+              Scroll through projects from different industries. Find one that matches your skills and passion.
+            </p>
+          </div>
+ 
+          <div class="relative flex flex-col items-center text-center reveal stagger-2">
+            <div class="step-circle flex items-center justify-center h-20 w-20 rounded-full bg-slate-100 dark:bg-slate-800 text-indigo-500 mb-6 z-10 border-4 border-white dark:border-slate-950">
+              <span class="text-4xl font-black">2</span>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Shoot Your Shot</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
+              Apply with a profile that shows off your talent. Once you're in, you'll work directly with the company.
+            </p>
+          </div>
+ 
+          <div class="relative flex flex-col items-center text-center reveal stagger-3">
+            <div class="step-circle flex items-center justify-center h-20 w-20 rounded-full bg-slate-100 dark:bg-slate-800 text-indigo-500 mb-6 z-10 border-4 border-white dark:border-slate-950">
+              <span class="text-4xl font-black">3</span>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Grow & Earn</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-400">
+              Get feedback, build your portfolio, and cash in. It's a win-win-win situation.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+ 
+    <section id="testimonials" class="py-20 md:py-28 bg-slate-50 dark:bg-slate-900">
+      <div class="container mx-auto px-6">
+        <div class="max-w-3xl mx-auto text-center mb-16">
+          <h2 class="reveal text-3xl md:text-5xl font-extrabold leading-tight tracking-tight text-slate-900 dark:text-white">
+            The Tea From Our Users
+          </h2>
+          <p class="reveal stagger-1 mt-4 text-base md:text-lg text-slate-600 dark:text-slate-400">
+            Don't just take our word for it. Here's what students are saying.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div class="testi-card reveal stagger-1 rounded-2xl bg-white dark:bg-slate-950 p-8 shadow-lg border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+            <div>
+              <div class="quote-icon text-indigo-500 mb-4">
+                <span class="material-symbols-outlined !text-4xl">format_quote</span>
+              </div>
+              <p class="text-slate-700 dark:text-slate-300 mb-6 text-lg">
+                "This was a total game-changer. I worked on a real marketing campaign and the mentorship I got helped me score a full-time offer. 10/10 would recommend."
+              </p>
+            </div>
+            <div class="flex items-center gap-4 mt-auto">
+              <img class="testi-avatar h-14 w-14 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLBj7UZjbrBq7Pxg1NRYb83yWL_G_GbEaJGg518ag6zWWh9Ut52KXn2NLNrdJYAi3qj6yekDLCgh6Vu2LzCn_hG_IMsHHvD_Me7anxgG5fxwa56BFfc_6UydexyW1FHvic6XEU6ntBAGKkaHv-XUt5lRLUcf_LJd_toOzB9noZY2163rfa2Kdi623m2kSLr6NcZFCozEwHwch_DnlpE4_xqlMW-L7-kcu-M-68JrcsnY2FK4vwp74cREnFAGnr62ab1q1AYm8bMwJS"/>
+              <div>
+                <p class="font-bold text-slate-900 dark:text-white">Sarah Chen</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Marketing Student, UCLA</p>
+              </div>
+            </div>
+          </div>
+ 
+          <div class="testi-card reveal stagger-2 rounded-2xl bg-white dark:bg-slate-950 p-8 shadow-lg border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+            <div>
+              <div class="quote-icon text-indigo-500 mb-4">
+                <span class="material-symbols-outlined !text-4xl">format_quote</span>
+              </div>
+              <p class="text-slate-700 dark:text-slate-300 mb-6 text-lg">
+                "I was stuck in tutorial hell. The project I worked on was challenging but it gave me a real peek into the tech world and made me sure about my career choice."
+              </p>
+            </div>
+            <div class="flex items-center gap-4 mt-auto">
+              <img class="testi-avatar h-14 w-14 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtdVzK8dDVs_9udu01rAdzqTjQetTqviMCycsrusSBjFMtTDGtVafO5DzR8rNk82BtwUPtoLI75m5S1wxYRTpAD64OTbOhLWHq7GuOFKnqjOAjhXquMezBUv__lQky_BnGe8afwMNsGOEqkLJY06UG4facdt4Us94QhXP7bJOH60IZ-3bcfQq8OroVuCjDL5xwjtU_fpj3MczRCwaE-NqXQdTS9BEJ4JeewEcQx4enYIKdG1-tgFxZkw-EQwqS7hzMr7qodxE9sEK-"/>
+              <div>
+                <p class="font-bold text-slate-900 dark:text-white">Michael Rodriguez</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Computer Science, UT Austin</p>
+              </div>
+            </div>
+          </div>
+ 
+          <div class="testi-card reveal stagger-3 rounded-2xl bg-white dark:bg-slate-950 p-8 shadow-lg border border-slate-200 dark:border-slate-800 flex flex-col justify-between">
+            <div>
+              <div class="quote-icon text-indigo-500 mb-4">
+                <span class="material-symbols-outlined !text-4xl">format_quote</span>
+              </div>
+              <p class="text-slate-700 dark:text-slate-300 mb-6 text-lg">
+                "My portfolio went from 0 to 100 real quick. The feedback from my mentor was priceless and I now have a solid project to show off to employers."
+              </p>
+            </div>
+            <div class="flex items-center gap-4 mt-auto">
+              <img class="testi-avatar h-14 w-14 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7BlndPifpkuV_KNIl7KTIJ-R-MqahI8D9QGiz0Op6OQJjzNZ-v1iem4-QpgeDOHY6z6DZkVYYOBElwtwT7o9bdpZowGmzqmt7nO4E66fdT-K07tX4WEKZwJ5EpsgN9pFyfdFr4JkNe0QjkkHC-StI1n7DqIQ8PuuPVJsK6TAWxTUdBZgSangTW7wWky2DIlU5tXjLfyTQgQrqN_6OYgUVcJbp6ideft1Ajyn8fEY6eyHmE026IiS5vrztr_7MbzyJd4KX1_dMSZbw"/>
+              <div>
+                <p class="font-bold text-slate-900 dark:text-white">Emily White</p>
+                <p class="text-sm text-slate-500 dark:text-slate-400">UX Design, RISD</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+ 
+    <section class="bg-indigo-600 text-white py-20 md:py-28 relative overflow-hidden">
+      <div class="absolute inset-0 bg-grid-white/[0.07]"></div>
+      <div class="container mx-auto px-6 text-center relative">
+        <h2 class="reveal text-3xl md:5xl font-extrabold leading-tight tracking-tight">Ready to Make Moves?</h2>
+        <p class="reveal stagger-1 mt-4 max-w-2xl mx-auto text-lg text-indigo-100/80">
+          Join the community of students and companies getting ahead.
+        </p>
+        <div class="reveal stagger-2 mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="{% url 'register' %}"
+             class="cta-btn-white flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-white text-indigo-600 text-base font-bold tracking-wide hover:bg-indigo-50 transition-all duration-300 ease-in-out shadow-lg btn-shimmer">
+            <span class="truncate">Sign Up - It's Free</span>
+          </a>
+          <a href="{% url 'internship_list' %}"
+             class="cta-btn-white flex cursor-pointer items-center justify-center overflow-hidden rounded-full h-14 px-8 bg-white/10 text-white text-base font-bold tracking-wide hover:bg-white/20 transition-all duration-300 ease-in-out btn-shimmer">
+            <span class="truncate">See Projects</span>
+          </a>
+        </div>
+      </div>
+    </section>
+ 
+  </main>
+ 
+  <footer class="bg-slate-100 dark:bg-slate-900 text-sm">
+    <div class="container mx-auto px-6 py-16">
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+        <div class="col-span-1 md:col-span-2 reveal">
+          <h3 class="font-bold text-lg text-slate-900 dark:text-white mb-4">Talentrek</h3>
+          <p class="text-slate-600 dark:text-slate-400">Connecting talent with opportunity.</p>
+        </div>
+        <div class="reveal stagger-1">
+          <h4 class="font-semibold text-slate-900 dark:text-white mb-4">For Students</h4>
+          <ul class="space-y-3 text-slate-600 dark:text-slate-400">
+            <li><a class="footer-link hover:text-indigo-500 transition-colors" href="{% url 'internship_list' %}">Find Internships</a></li>
+            <li><a class="footer-link hover:text-indigo-500 transition-colors" href="#how-it-works">How It Works</a></li>
+            <li><a class="footer-link hover:text-indigo-500 transition-colors" href="#testimonials">Success Stories</a></li>
+          </ul>
+        </div>
+        <div class="reveal stagger-2">
+          <h4 class="font-semibold text-slate-900 dark:text-white mb-4">For Companies</h4>
+          <ul class="space-y-3 text-slate-600 dark:text-slate-400">
+            <li><a class="footer-link hover:text-indigo-500 transition-colors" href="{% url 'register' %}">Post a Project</a></li>
+            <li><a class="footer-link hover:text-indigo-500 transition-colors" href="#">Our Talent Pool</a></li>
+            <li><a class="footer-link hover:text-indigo-500 transition-colors" href="#">Pricing</a></li>
+          </ul>
+        </div>
+        <div class="reveal stagger-3">
+          <h4 class="font-semibold text-slate-900 dark:text-white mb-4">Company</h4>
+          <ul class="space-y-3 text-slate-600 dark:text-slate-400">
+            <li><a class="footer-link hover:text-indigo-500 transition-colors" href="#">About Us</a></li>
+            <li><a class="footer-link hover:text-indigo-500 transition-colors" href="#">Contact</a></li>
+            <li><a class="footer-link hover:text-indigo-500 transition-colors" href="#">Careers</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row justify-between items-center text-slate-500 dark:text-slate-400 reveal">
+        <p>© 2026 Talentrek. All rights reserved.</p>
+        <div class="flex gap-4 mt-4 sm:mt-0">
+          <a class="footer-link hover:text-indigo-500 transition-colors" href="#">Terms of Service</a>
+          <a class="footer-link hover:text-indigo-500 transition-colors" href="#">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+ 
+</div>
+ 
+<!-- ── Scroll Reveal Script ── -->
+<script>
+  (function () {
+    const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-scale, .dashed-line');
+ 
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+ 
+    revealEls.forEach(el => observer.observe(el));
+  })();
+</script>
+ 
+{% endblock %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 p-6 overflow-hidden">
+    
+    <div class="animate__animated animate__zoomIn w-full max-w-md bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-2xl border border-slate-200 dark:border-slate-800 p-10 relative">
+        
+        <div class="absolute -z-10 top-0 left-1/2 -translate-x-1/2 w-64 h-64 bg-indigo-500/10 blur-[100px] rounded-full"></div>
+
+        <div class="text-center mb-8">
+            <div class="inline-flex h-12 w-12 rounded-xl bg-indigo-600 items-center justify-center text-white mb-4 shadow-lg shadow-indigo-500/20 animate__animated animate__bounceInDown">
+                <span class="material-symbols-outlined">rocket_launch</span>
+            </div>
+            <h1 class="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                {% if "login" in request.path %}Welcome Back{% else %}Join Talentrek{% endif %}
+            </h1>
+            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em] mt-2">
+                {% if "login" in request.path %}The mission continues{% else %}Start your journey today{% endif %}
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-3 mb-6">
+            <a href="{% provider_login_url 'google' %}" class="group flex items-center justify-center gap-3 py-4 px-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl hover:border-indigo-500 dark:hover:border-indigo-500 transition-all duration-300">
+                <img src="https://www.svgrepo.com/show/355037/google.svg" class="w-5 h-5 group-hover:scale-110 transition-transform" alt="Google">
+                <span class="font-bold text-[11px] uppercase tracking-widest text-slate-700 dark:text-slate-200">Continue with Google</span>
+            </a>
+        </div>
+
+        <div class="relative my-8">
+            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-slate-100 dark:border-slate-800"></div></div>
+            <div class="relative flex justify-center text-[10px] uppercase font-black tracking-widest"><span class="px-4 bg-white dark:bg-slate-900 text-slate-400">Or use email</span></div>
+        </div>
+
+        <form method="post" class="space-y-5 {% if form.errors %}animate__animated animate__headShake{% endif %}">
+            {% csrf_token %}
+            {% for field in form %}
+            <div class="group">
+                <label class="block text-[10px] font-black uppercase tracking-[0.15em] text-slate-500 mb-2 transition-colors group-focus-within:text-indigo-500">{{ field.label }}</label>
+                <div class="relative">
+                    {{ field }}
+                    </div>
+                {% if field.errors %}
+                    <p class="text-rose-500 text-[10px] font-bold uppercase tracking-wide mt-2 flex items-center gap-1">
+                        <span class="material-symbols-outlined !text-sm">error</span>
+                        {{ field.errors.0 }}
+                    </p>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="group relative w-full py-5 px-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-black uppercase tracking-[0.2em] text-[11px] rounded-2xl shadow-xl hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-500 transition-all active:scale-[0.98] overflow-hidden">
+                <span class="relative z-10">Continue</span>
+                <div class="absolute inset-0 bg-indigo-500 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+            </button>
+        </form>
+
+        <p class="mt-10 text-center text-[11px] font-bold uppercase tracking-widest text-slate-500">
+            {% if "login" in request.path %}
+                New to the platform? <a href="{% url 'register' %}" class="text-indigo-600 dark:text-indigo-400 font-black hover:underline underline-offset-4 ml-1">Create Account</a>
+            {% else %}
+                Already a member? <a href="{% url 'login' %}" class="text-indigo-600 dark:text-indigo-400 font-black hover:underline underline-offset-4 ml-1">Log In</a>
+            {% endif %}
+        </p>
+    </div>
+</div>
+
+<style>
+    /* Modern Input Styling */
+    input {
+        width: 100%;
+        padding: 1.25rem 1.25rem;
+        border-radius: 1.25rem;
+        border: 1px solid #e2e8f0;
+        background-color: #f8fafc;
+        outline: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    .dark input {
+        background-color: #0f172a;
+        border-color: #1e293b;
+        color: white;
+    }
+    
+    /* ADDED: Smooth Focus Interaction */
+    input:focus { 
+        border-color: #4f46e5; 
+        background-color: white;
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        transform: translateY(-1px);
+    }
+    .dark input:focus {
+        background-color: #020617;
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2);
+    }
+
+    /* Error input state */
+    .animate__headShake input {
+        border-color: #f43f5e;
+    }
+</style>
+{% endblock %}

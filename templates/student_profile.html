@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+
+{% block title %}Complete Your Profile - Talentrek{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 transition-colors duration-300">
+  
+  <header class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800/60 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl sticky top-0 z-50 px-8 py-4">
+    <a href="{% url 'home' %}" class="flex items-center gap-3 group">
+      <div class="h-8 w-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white shadow-lg group-hover:rotate-12 transition-transform">
+        <span class="material-symbols-outlined !text-lg">rocket_launch</span>
+      </div>
+      <h2 class="text-lg font-black tracking-tighter uppercase text-slate-900 dark:text-white">Talentrek</h2>
+    </a>
+    <div class="hidden md:flex items-center gap-2">
+        <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Builder Mode</span>
+        <div class="h-1 w-1 rounded-full bg-indigo-500 animate-pulse"></div>
+    </div>
+  </header>
+
+  <main class="flex flex-1 justify-center py-12 md:py-20 px-4">
+    <div class="flex flex-col gap-10 w-full max-w-4xl animate__animated animate__fadeIn">
+
+      <div class="flex flex-col gap-4 text-center">
+        <h1 class="text-4xl md:text-5xl font-black leading-tight tracking-tight text-slate-900 dark:text-white uppercase">
+          Build Your <span class="text-indigo-600">Identity</span>
+        </h1>
+        <p class="text-base font-medium text-slate-500 dark:text-slate-400 max-w-lg mx-auto">
+          Recruiters see this first. High-quality profiles get 4x more engagement.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-3 max-w-2xl mx-auto w-full">
+        <div class="flex justify-between items-end px-1">
+          <p class="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-600 dark:text-indigo-400">Finalizing Profile</p>
+          <div class="flex items-center gap-1.5 bg-amber-500/10 px-3 py-1 rounded-full">
+            <span class="material-symbols-outlined text-amber-500 !text-sm" style="font-variation-settings: 'FILL' 1;">bolt</span>
+            <p class="text-[9px] font-black text-amber-600 dark:text-amber-500 uppercase tracking-widest">+100 XP REWARD</p>
+          </div>
+        </div>
+        <div class="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
+          <div class="bg-indigo-600 h-full rounded-full transition-all duration-1000 ease-out shadow-[0_0_15px_rgba(79,70,229,0.4)]" style="width: 85%"></div>
+        </div>
+      </div>
+
+      <form method="post" enctype="multipart/form-data" 
+            class="bg-white dark:bg-slate-900/40 p-8 md:p-16 rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl relative overflow-hidden">
+        
+        <div class="absolute -top-24 -right-24 size-64 bg-indigo-600/5 rounded-full blur-3xl"></div>
+        
+        {% csrf_token %}
+
+        <div class="relative z-10 flex flex-col gap-16">
+
+          <div class="flex flex-col gap-10">
+            <div class="flex items-center gap-4">
+              <div class="flex items-center justify-center size-12 rounded-2xl bg-indigo-600 text-white shadow-lg shadow-indigo-500/20">
+                <span class="material-symbols-outlined">person_pin</span>
+              </div>
+              <h2 class="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Personal Identity</h2>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center gap-10 bg-slate-50 dark:bg-slate-950/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800/50 group">
+              <div class="relative">
+                <div class="size-32 rounded-full bg-white dark:bg-slate-800 overflow-hidden border-4 border-white dark:border-slate-900 shadow-2xl group-hover:scale-105 transition-transform duration-500">
+                  {% if profile.generated_avatar %}
+                    <img src="{{ profile.generated_avatar.url }}" class="w-full h-full object-cover">
+                  {% elif profile.profile_picture %}
+                    <img src="{{ profile.profile_picture.url }}" class="w-full h-full object-cover">
+                  {% else %}
+                    <div class="w-full h-full flex items-center justify-center bg-slate-100 dark:bg-slate-800">
+                       <span class="material-symbols-outlined text-slate-300 dark:text-slate-600 !text-6xl">account_circle</span>
+                    </div>
+                  {% endif %}
+                </div>
+                <div class="absolute bottom-1 right-1 size-8 bg-indigo-600 rounded-full border-4 border-white dark:border-slate-900 flex items-center justify-center text-white">
+                    <span class="material-symbols-outlined !text-sm">add_a_photo</span>
+                </div>
+              </div>
+              <div class="flex-1 space-y-4 w-full">
+                <div>
+                    <label class="text-[10px] font-black uppercase text-indigo-600 dark:text-indigo-400 tracking-[0.2em] ml-1">Update Media</label>
+                    <div class="file-input-wrapper mt-2">
+                        {{ form.profile_picture }}
+                    </div>
+                </div>
+                <div class="pt-2 border-t border-slate-200 dark:border-slate-800">
+                    <a href="{% url 'generate_avatar' %}" class="inline-flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-indigo-500 hover:text-indigo-400 transition-colors">
+                        <span class="material-symbols-outlined !text-sm">auto_awesome</span>
+                        Generate AI Likeness
+                    </a>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="space-y-3">
+                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">First Name</label>
+                {{ form.first_name }}
+              </div>
+              <div class="space-y-3">
+                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Last Name</label>
+                {{ form.last_name }}
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-10 pt-10 border-t border-slate-100 dark:border-slate-800/50">
+            <div class="flex items-center gap-4">
+              <div class="flex items-center justify-center size-12 rounded-2xl bg-indigo-500/10 text-indigo-600 border border-indigo-600/20">
+                <span class="material-symbols-outlined">face</span>
+              </div>
+              <div>
+                <h2 class="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Identity Protocol</h2>
+                <p class="text-[9px] font-bold text-slate-400 uppercase tracking-[0.2em]">Used for AI Likeness Generation</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-slate-50 dark:bg-slate-950/50 p-8 rounded-[2rem] border border-slate-100 dark:border-slate-800/50">
+              <div class="space-y-3">
+                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Visual Specs</label>
+                {{ form.has_specs }}
+              </div>
+              <div class="space-y-3">
+                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Hair Architecture</label>
+                {{ form.hair_type }}
+              </div>
+              <div class="md:col-span-2">
+                <p class="text-[8px] font-bold text-slate-400 uppercase tracking-widest text-center">
+                    Note: Changes here will update the AI generation prompt for your digital avatar.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-10 pt-10 border-t border-slate-100 dark:border-slate-800/50">
+            <div class="flex items-center gap-4">
+              <div class="flex items-center justify-center size-12 rounded-2xl bg-emerald-500 text-white shadow-lg shadow-emerald-500/20">
+                <span class="material-symbols-outlined">verified</span>
+              </div>
+              <h2 class="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Professional Branding</h2>
+            </div>
+
+            <div class="space-y-8">
+              <div class="space-y-3">
+                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Headline</label>
+                {{ form.headline }}
+                <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest ml-1">Use keywords like: Full Stack Developer, UI/UX Designer, Data Analyst</p>
+              </div>
+              <div class="space-y-3">
+                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Your Story (Bio)</label>
+                {{ form.bio }}
+              </div>
+              <div class="space-y-3">
+                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Core Tech Stack</label>
+                {{ form.skills }}
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-10 pt-10 border-t border-slate-100 dark:border-slate-800/50">
+            <div class="flex items-center gap-4">
+              <div class="flex items-center justify-center size-12 rounded-2xl bg-amber-500 text-white shadow-lg shadow-amber-500/20">
+                <span class="material-symbols-outlined">school</span>
+              </div>
+              <h2 class="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight">Academic Records</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div class="space-y-3">
+                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">University Name</label>
+                {{ form.university }}
+              </div>
+              <div class="space-y-3">
+                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Field of Study</label>
+                {{ form.major }}
+              </div>
+              <div class="space-y-3">
+                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Graduation Year</label>
+                {{ form.graduation_year }}
+              </div>
+              <div class="space-y-3">
+                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Cumulative GPA</label>
+                {{ form.gpa }}
+              </div>
+              <div class="space-y-4 md:col-span-2 bg-indigo-600/5 p-8 rounded-3xl border border-indigo-600/10">
+                <label class="text-[11px] font-black uppercase tracking-widest text-indigo-600 dark:text-indigo-400 flex items-center gap-2 mb-2">
+                    <span class="material-symbols-outlined !text-sm">description</span>
+                    Resume Upload (PDF Preferred)
+                </label>
+                <div class="text-sm font-bold text-slate-600 dark:text-slate-400">{{ form.resume_pdf }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-6 pt-12 border-t border-slate-100 dark:border-slate-800/50">
+            <a href="{% url 'dashboard' %}" class="order-2 sm:order-1 text-slate-400 font-black uppercase text-[10px] tracking-[0.3em] hover:text-rose-500 transition-colors">
+              Discard Changes
+            </a>
+
+            <button type="submit"
+                    class="order-1 sm:order-2 w-full sm:w-auto flex items-center justify-center gap-4 rounded-2xl h-16 px-12 bg-indigo-600 text-white
+                           text-xs font-black uppercase tracking-[0.3em] hover:bg-indigo-500 transition-all shadow-2xl shadow-indigo-500/30 active:scale-95 group">
+              Launch Profile
+              <span class="material-symbols-outlined !text-xl group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">rocket_launch</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+
+<style>
+  /* Global Input Overrides for Django Forms */
+  input:not([type="file"]):not([type="checkbox"]), 
+  textarea, 
+  select {
+    width: 100% !important;
+    padding: 1.25rem 1.5rem !important;
+    border-radius: 1.25rem !important;
+    font-weight: 700 !important;
+    font-size: 0.9rem !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    outline: none !important;
+    background-color: #f8fafc !important;
+    border: 2px solid #f1f5f9 !important;
+    color: #0f172a !important;
+  }
+
+  .dark input:not([type="file"]):not([type="checkbox"]), 
+  .dark textarea, 
+  .dark select {
+    background-color: #030712 !important;
+    border: 2px solid #1e293b !important;
+    color: #f1f5f9 !important;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    border-color: #4f46e5 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.1) !important;
+    transform: translateY(-2px);
+  }
+
+  .dark input:focus, .dark textarea:focus, .dark select:focus {
+    background-color: #030712 !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  textarea { 
+    min-height: 140px !important; 
+    line-height: 1.6 !important;
+    resize: none !important;
+  }
+
+  /* File Input Customization */
+  input[type="file"] {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #64748b;
+    cursor: pointer;
+  }
+
+  input[type="file"]::file-selector-button {
+    background-color: #4f46e5;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.75rem;
+    border: none;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 10px;
+    margin-right: 1rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  input[type="file"]::file-selector-button:hover {
+    background-color: #4338ca;
+  }
+
+  ::placeholder { 
+    color: #94a3b8 !important; 
+    font-weight: 500 !important;
+  }
+</style>
+{% endblock %}

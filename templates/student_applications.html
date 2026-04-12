@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-10 px-6">
+    <h1 class="text-3xl font-black mb-8">My Applications</h1>
+    <div class="space-y-4">
+        {% for app in user_applications %}
+        <div class="p-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl flex justify-between items-center">
+            <div>
+                <h3 class="font-bold text-lg">{{ app.internship.title }}</h3>
+                <p class="text-slate-500 text-sm">{{ app.internship.company.username }}</p>
+            </div>
+            <div>
+                {% if app.status == 'Accepted' %}
+                    <span class="px-4 py-1 bg-green-100 text-green-600 rounded-full font-bold text-xs uppercase tracking-widest">Selected</span>
+                {% elif app.status == 'Rejected' %}
+                    <span class="px-4 py-1 bg-red-100 text-red-600 rounded-full font-bold text-xs uppercase tracking-widest">Not Selected</span>
+                {% else %}
+                    <span class="px-4 py-1 bg-slate-100 text-slate-500 rounded-full font-bold text-xs uppercase tracking-widest">Pending</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>{% block title %}Talentrek{% endblock %}</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            fontFamily: {
+              onest: ["Onest", "sans-serif"]
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
+        }
+
+        body {
+          transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Custom scrollbar for a sleek dark look */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    </style>
+</head>
+
+<body class="font-onest bg-white dark:bg-slate-950 text-slate-800 dark:text-slate-200 min-h-screen overflow-x-hidden">
+
+{% if messages %}
+<div class="fixed top-5 right-5 z-[9999] flex flex-col gap-3">
+    {% for message in messages %}
+    <div class="message-toast animate__animated animate__fadeInRight bg-slate-900 border border-slate-700 text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-3">
+        <span class="material-symbols-outlined text-indigo-400">info</span>
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+{% block content %}{% endblock %}
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    // Initialize Scroll Animations
+    AOS.init({
+        duration: 800,
+        once: true,
+        easing: 'ease-in-out'
+    });
+
+    // Auto-hide messages after 4 seconds
+    setTimeout(() => {
+        const toasts = document.querySelectorAll('.message-toast');
+        toasts.forEach(toast => {
+            toast.classList.add('animate__fadeOutRight');
+            setTimeout(() => toast.remove(), 1000);
+        });
+    }, 4000);
+
+    const toggleBtn = document.getElementById("theme-toggle");
+    const toggleIcon = document.getElementById("theme-icon");
+
+    function syncThemeIcon() {
+        if (toggleIcon) {
+            const isDark = document.documentElement.classList.contains("dark");
+            toggleIcon.innerText = isDark ? "light_mode" : "dark_mode";
+        }
+    }
+
+    syncThemeIcon();
+
+    if (toggleBtn) {
+        toggleBtn.addEventListener("click", () => {
+            const html = document.documentElement;
+            const isNowDark = html.classList.toggle("dark");
+            localStorage.setItem("theme", isNowDark ? "dark" : "light");
+            syncThemeIcon();
+        });
+    }
+</script>
+
+</body>
+</html>

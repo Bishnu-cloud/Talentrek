@@ -1,0 +1,211 @@
+{% extends "base.html" %}
+
+{% block title %}Apply | Talentrek{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+<div class="min-h-screen bg-[#030712] text-slate-100 font-sans pb-24 transition-colors duration-300">
+
+    <header class="bg-[#030712]/90 border-b border-slate-800/60 sticky top-0 z-50 backdrop-blur-xl px-8 py-4">
+        <div class="max-w-[1440px] mx-auto flex items-center justify-between">
+            <a href="{% url 'home' %}" class="flex items-center gap-3 group">
+                <div class="h-9 w-9 rounded-lg bg-indigo-600 flex items-center justify-center text-white shadow-lg group-hover:rotate-12 transition-transform">
+                    <span class="material-symbols-outlined !text-xl">rocket_launch</span>
+                </div>
+                <span class="font-black text-lg tracking-tighter text-white uppercase">Talentrek</span>
+            </a>
+            <div class="flex items-center gap-6">
+                <div class="hidden md:flex flex-col items-end">
+                    <span class="text-[8px] font-black text-slate-500 uppercase tracking-[0.3em]">Status</span>
+                    <span class="text-[10px] font-bold text-emerald-500 uppercase">Drafting Phase</span>
+                </div>
+                <a href="{% url 'internship_detail' internship.pk %}" class="h-10 px-6 rounded-xl border border-slate-800 flex items-center justify-center text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-white hover:border-slate-600 transition-all">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-[1440px] mx-auto px-8 py-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+            
+            <div class="lg:col-span-8 animate__animated animate__fadeInLeft">
+                <div class="mb-12">
+                    <div class="flex items-center gap-3 mb-4">
+                        <span class="h-px w-12 bg-indigo-500"></span>
+                        <span class="text-indigo-400 text-[10px] font-black uppercase tracking-[0.4em]">Official Submission Terminal</span>
+                    </div>
+                    <h1 class="text-5xl font-black text-white tracking-tight leading-none uppercase">
+                        Applying for <br/>
+                        <span class="text-indigo-500">{{ internship.title }}</span>
+                    </h1>
+                </div>
+
+                <div class="bg-[#0f172a]/40 border border-slate-800/60 rounded-[3rem] p-10 md:p-16 shadow-2xl relative overflow-hidden">
+                    <div class="absolute -top-24 -left-24 size-64 bg-indigo-600/10 rounded-full blur-3xl"></div>
+                    
+                    <form method="POST" enctype="multipart/form-data" class="relative z-10 space-y-12">
+                        {% csrf_token %}
+
+                        <div class="space-y-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="material-symbols-outlined text-indigo-500 !text-sm">description</span>
+                                <label class="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em]">Resume / CV (PDF Only)</label>
+                            </div>
+                            <div class="bg-[#030712] border-2 border-dashed border-slate-800 rounded-3xl p-6 hover:border-indigo-500 transition-all group">
+                                {{ form.resume }}
+                                <p class="text-[9px] text-slate-600 font-bold uppercase tracking-widest mt-3 group-hover:text-slate-400">Attach your most recent professional summary</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                            <div class="space-y-4">
+                                <label class="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Key Competencies</label>
+                                <div class="bg-[#030712] border border-slate-800 rounded-2xl px-6 py-4 focus-within:border-indigo-500 transition-colors">
+                                    {{ form.skills }}
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <label class="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Prior Experience</label>
+                                <div class="bg-[#030712] border border-slate-800 rounded-2xl px-6 py-4 focus-within:border-indigo-500 transition-colors">
+                                    {{ form.experience }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <label class="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Why are you the ideal candidate?</label>
+                            <div class="bg-[#030712] border border-slate-800 rounded-3xl px-6 py-4 min-h-[160px] focus-within:border-indigo-500 transition-colors">
+                                {{ form.motivation }}
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                            <div class="space-y-4">
+                                <label class="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Earliest Start Date</label>
+                                <div class="bg-[#030712] border border-slate-800 rounded-2xl px-6 py-4 focus-within:border-indigo-500 transition-colors">
+                                    {{ form.availability }}
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <label class="text-[11px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Portfolio / Link</label>
+                                <div class="bg-[#030712] border border-slate-800 rounded-2xl px-6 py-4 focus-within:border-indigo-500 transition-colors">
+                                    {{ form.portfolio }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-10 border-t border-slate-800/50">
+                            <button type="submit" class="group flex items-center justify-center gap-4 w-full bg-indigo-600 text-white py-6 rounded-2xl font-black uppercase tracking-[0.3em] text-xs hover:bg-indigo-500 transition-all shadow-2xl shadow-indigo-500/20 active:scale-[0.98]">
+                                Submit Final Application
+                                <span class="material-symbols-outlined !text-xl group-hover:-translate-y-1 group-hover:translate-x-1 transition-transform">rocket_launch</span>
+                            </button>
+                            <p class="text-center text-[9px] text-slate-600 font-bold uppercase tracking-[0.4em] mt-6">Review your details before launching</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="lg:col-span-4 lg:sticky lg:top-24 animate__animated animate__fadeInRight">
+                <div class="bg-[#0f172a] border border-slate-800/60 rounded-[2.5rem] p-10 space-y-8 shadow-xl">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-[10px] font-black text-indigo-500 uppercase tracking-[0.4em]">Project Brief</h3>
+                        <div class="h-2 w-2 rounded-full bg-indigo-500 shadow-[0_0_10px_#6366f1]"></div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div>
+                            <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">Lead Partner</p>
+                            <div class="flex items-center gap-3">
+                                <div class="h-10 w-10 bg-slate-800 rounded-xl flex items-center justify-center font-black text-white">
+                                    {{ internship.company.username|slice:":1"|upper }}
+                                </div>
+                                <p class="text-lg font-bold text-white">{{ internship.company.username }}</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-1">Contract Value</p>
+                            <p class="text-3xl font-black text-white tracking-tighter">₹{{ internship.salary }} <span class="text-sm text-slate-500 font-bold uppercase tracking-widest">/ Mo</span></p>
+                        </div>
+
+                        <div class="pt-6 border-t border-slate-800/60">
+                            <p class="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-3">Project Description</p>
+                            <div class="text-sm text-slate-400 leading-relaxed font-medium line-clamp-[10]">
+                                {{ internship.description }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-indigo-600/5 border border-indigo-500/10 p-6 rounded-2xl">
+                        <p class="text-[9px] font-black text-indigo-400 uppercase tracking-widest flex items-center gap-2">
+                            <span class="material-symbols-outlined !text-sm">verified</span>
+                            Verified Post
+                        </p>
+                        <p class="text-[11px] text-slate-500 mt-2 font-medium">This opportunity is protected by Talentrek secure matching protocols.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<style>
+    /* Styling for Django-generated inputs */
+    form input:not([type="file"]), 
+    form textarea, 
+    form select {
+        width: 100% !important;
+        background: transparent !important;
+        border: none !important;
+        color: #f1f5f9 !important;
+        font-size: 0.9rem !important;
+        font-weight: 700 !important;
+        outline: none !important;
+        padding: 0 !important;
+    }
+
+    form textarea {
+        min-height: 120px !important;
+        resize: none !important;
+        line-height: 1.6 !important;
+    }
+
+    form input::placeholder, 
+    form textarea::placeholder {
+        color: #334155 !important;
+        font-weight: 600 !important;
+    }
+
+    /* File Input Styling */
+    input[type="file"] {
+        color: #94a3b8;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    input[type="file"]::file-selector-button {
+        background: #1e293b;
+        color: #f1f5f9;
+        border: 1px solid #334155;
+        padding: 8px 16px;
+        border-radius: 12px;
+        cursor: pointer;
+        margin-right: 15px;
+        font-weight: 900;
+        text-transform: uppercase;
+        font-size: 9px;
+        transition: all 0.2s;
+    }
+
+    input[type="file"]::file-selector-button:hover {
+        background: #334155;
+        border-color: #4f46e5;
+    }
+</style>
+{% endblock %}

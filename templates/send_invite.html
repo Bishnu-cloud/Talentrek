@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Send Invitation{% endblock %}
+
+{% block content %}
+
+<div class="max-w-xl mx-auto py-10">
+
+<h2 class="text-xl font-semibold mb-4">
+Send Invitation to {{ application.student.username }}
+</h2>
+
+<form method="POST">
+{% csrf_token %}
+
+<textarea
+name="message"
+rows="6"
+class="w-full border rounded p-3"
+placeholder="Write invitation message..."
+required
+></textarea>
+
+<button
+class="mt-4 bg-green-600 text-white px-4 py-2 rounded">
+Send Invitation
+</button>
+
+</form>
+
+</div>
+
+{% endblock %}

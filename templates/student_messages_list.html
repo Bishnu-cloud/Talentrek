@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Messages | Talentrek{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+<div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans pb-24 transition-colors duration-300">
+    
+    <header class="bg-white/90 dark:bg-slate-950/90 border-b border-slate-200 dark:border-slate-800/60 sticky top-0 z-50 backdrop-blur-xl">
+        <div class="max-w-[1440px] mx-auto px-8 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-6">
+                <a href="{% url 'home' %}" class="flex items-center gap-3 group">
+                    <div class="h-9 w-9 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-lg group-hover:rotate-12 transition-transform">
+                        <span class="material-symbols-outlined !text-xl">rocket_launch</span>
+                    </div>
+                    <span class="font-black text-lg tracking-tighter text-slate-900 dark:text-white uppercase">Talentrek</span>
+                </a>
+                <div class="h-4 w-px bg-slate-200 dark:bg-slate-800 hidden md:block"></div>
+                <div class="hidden md:flex items-center gap-2">
+                    <div class="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">Secure Protocol Active</span>
+                </div>
+            </div>
+            
+            <a href="{% url 'dashboard' %}" class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-indigo-600 dark:hover:text-white transition-colors">
+                <span class="material-symbols-outlined !text-sm">dashboard</span>
+                Dashboard
+            </a>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-8 py-16">
+        
+        <div class="mb-12 animate__animated animate__fadeInDown">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="text-indigo-600 dark:text-indigo-400 text-[10px] font-black uppercase tracking-[0.4em] px-4 py-1.5 bg-indigo-600/5 rounded-full border border-indigo-600/10">Communications</span>
+                <div class="h-px w-12 bg-slate-200 dark:bg-slate-800"></div>
+            </div>
+            <h1 class="text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-none mb-4 uppercase">Message Center</h1>
+            <p class="text-slate-500 dark:text-slate-400 text-lg font-medium">Manage your encrypted transmissions with potential partners.</p>
+        </div>
+
+        <div class="grid gap-6 animate__animated animate__fadeInUp">
+            {% for thread in threads %}
+            <a href="{% url 'student_message_thread' thread.company.id %}" 
+               class="group relative bg-white dark:bg-[#0f172a]/40 border border-slate-200 dark:border-slate-800/60 p-8 rounded-[2.5rem] flex flex-col md:flex-row justify-between items-center hover:border-indigo-500/50 hover:bg-slate-50 dark:hover:bg-indigo-600/5 transition-all duration-300 shadow-sm hover:shadow-2xl hover:shadow-indigo-500/10 overflow-hidden">
+                
+                <div class="absolute -right-4 -bottom-4 opacity-[0.03] dark:opacity-[0.05] group-hover:scale-110 transition-transform duration-700">
+                    <span class="material-symbols-outlined !text-9xl">forum</span>
+                </div>
+
+                <div class="flex items-center gap-6 relative z-10 w-full">
+                    <div class="h-16 w-16 bg-gradient-to-br from-indigo-600 to-violet-700 rounded-2xl flex items-center justify-center font-black text-2xl text-white shadow-xl shadow-indigo-500/20 group-hover:rotate-6 transition-transform">
+                        {{ thread.company.username|slice:":1"|upper }}
+                    </div>
+                    
+                    <div class="flex-1">
+                        <div class="flex items-center gap-3 mb-1">
+                            <h3 class="font-black uppercase tracking-[0.1em] text-base text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                                {{ thread.company.username }}
+                            </h3>
+                            <span class="h-1 w-1 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+                            <span class="text-[9px] font-black uppercase tracking-widest text-slate-400">Verified Partner</span>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <p class="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+                                <span class="material-symbols-outlined !text-xs text-indigo-500">alternate_email</span>
+                                Open Secure Channel
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-6 mt-6 md:mt-0 relative z-10 w-full md:w-auto justify-between md:justify-end">
+                    <div class="flex flex-col items-end gap-1">
+                        <div class="flex gap-0.5 items-end h-3">
+                            <div class="w-1 h-1 bg-indigo-500 rounded-full"></div>
+                            <div class="w-1 h-2 bg-indigo-500 rounded-full"></div>
+                            <div class="w-1 h-3 bg-indigo-500 rounded-full"></div>
+                        </div>
+                        <span class="text-[8px] font-black text-slate-400 uppercase tracking-tighter">Connection Stable</span>
+                    </div>
+                    
+                    <div class="h-12 w-12 rounded-full border border-slate-200 dark:border-slate-800 flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white group-hover:border-transparent transition-all">
+                        <span class="material-symbols-outlined !text-lg">arrow_forward_ios</span>
+                    </div>
+                </div>
+            </a>
+            {% empty %}
+            <div class="relative py-32 border-2 border-dashed border-slate-200 dark:border-slate-900 rounded-[4rem] flex flex-col items-center justify-center text-center overflow-hidden">
+                <div class="absolute inset-0 bg-slate-100/50 dark:bg-slate-900/10"></div>
+                <div class="relative z-10">
+                    <div class="size-20 bg-slate-100 dark:bg-slate-900 rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <span class="material-symbols-outlined !text-4xl text-slate-300 dark:text-slate-700">no_sim</span>
+                    </div>
+                    <p class="text-slate-400 dark:text-slate-600 font-black uppercase tracking-[0.4em] text-xs">No active transmissions found</p>
+                    <p class="text-slate-400/60 dark:text-slate-600/60 text-[9px] mt-2 font-bold uppercase tracking-widest">Scanning for incoming invites...</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</div>
+
+<style>
+    /* Custom Scrollbar for the dark theme */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #1e293b;
+        border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #334155;
+    }
+</style>
+{% endblock %}

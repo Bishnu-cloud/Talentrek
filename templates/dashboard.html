@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Talentrek{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 px-4">
+  <div class="w-full max-w-lg">
+
+    <div class="bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl p-8 relative overflow-hidden">
+      <!-- subtle accent -->
+      <div class="pointer-events-none absolute inset-x-0 -top-10 h-24 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-sky-500/10 blur-2xl"></div>
+
+      <div class="relative space-y-5">
+        <!-- Icon + heading -->
+        <div class="flex items-start gap-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-500">
+            <span class="material-symbols-outlined">info</span>
+          </div>
+          <div>
+            <h1 class="text-2xl font-bold tracking-tight">
+              Dashboard not available
+            </h1>
+            <p class="mt-1 text-sm text-slate-600 dark:text-slate-400">
+              You’re logged in as
+              <span class="font-semibold">{{ request.user.username }}</span>,
+              but this account doesn’t have a role (<code>student</code> or <code>company</code>),
+              so we don’t know which dashboard to show you.
+            </p>
+          </div>
+        </div>
+
+        <!-- Explanation -->
+        <div class="rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-4 py-3 text-sm">
+          <p class="font-medium text-slate-800 dark:text-slate-100 mb-2">
+            How to fix this:
+          </p>
+          <ol class="list-decimal list-inside space-y-1 text-slate-600 dark:text-slate-400">
+            <li>
+              <a class="text-indigo-600 dark:text-indigo-400 font-semibold hover:underline" href="{% url 'logout' %}">
+                Log out
+              </a>
+            </li>
+            <li>Sign up again and choose either <strong>Student</strong> or <strong>Company</strong> as your role</li>
+            <li>After that, visit <code>/dashboard/</code> again to see your personalized dashboard</li>
+          </ol>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+          <a href="{% url 'home' %}"
+             class="inline-flex flex-1 items-center justify-center rounded-lg h-11 px-4 bg-slate-100 dark:bg-slate-800 text-sm font-semibold text-slate-800 dark:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+            Go to Home
+          </a>
+
+          <a href="{% url 'logout' %}"
+             class="inline-flex flex-1 items-center justify-center rounded-lg h-11 px-4 bg-indigo-600 text-sm font-semibold text-white hover:bg-indigo-700 transition-colors">
+            Logout &amp; Re-register
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
