@@ -54,10 +54,13 @@ class RegistrationForm(forms.ModelForm):
             user.save()
             UserProfile.objects.create(user=user, role=self.cleaned_data['role'])
         return user
+    
+# forms.py
 
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(label="Username")
+    username = forms.CharField(label="Username") 
     password = forms.CharField(label="Password", widget=forms.PasswordInput)
+
 
 class MicroInternshipForm(forms.ModelForm):
     class Meta:

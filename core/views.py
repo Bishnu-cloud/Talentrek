@@ -471,11 +471,6 @@ def generate_avatar(request):
 class MySocialAccountAdapter(DefaultSocialAccountAdapter):
     def save_user(self, request, sociallogin, form=None):
         user = super().save_user(request, sociallogin, form)
-        # Auto-create a student profile for Google users
-        UserProfile.objects.get_or_create(
-            user=user,
-            defaults={'role': 'student'}
-        )
         return user
     
 def select_role(request):
@@ -486,3 +481,14 @@ def select_role(request):
         profile.save()
         return redirect('dashboard')
     return render(request, 'select_role.html')
+
+@login_required
+def login_redirect_view(request):
+    profile, created = UserProfile.objects.get_or_create(user=request.user)
+    
+    # If role is missing (New Google User), send to selection page
+    if not profile.role:
+        return redirect('select_role')
+    
+    # Otherwise, send them to the dashboard
+    return redirect('dashboard')

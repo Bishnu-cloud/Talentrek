@@ -12,7 +12,7 @@ class UserProfile(models.Model):
     ROLE_CHOICES = [('student', 'Student'), ('company', 'Company')]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='userprofile')
-    role = models.CharField(max_length=10, choices=[('student', 'Student'), ('company', 'Company')])
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, null=True, blank=True)
     
     # NEW FIELDS (Notice: No "placeholder" here!)
     first_name = models.CharField(max_length=100, blank=True, null=True)

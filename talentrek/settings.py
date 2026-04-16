@@ -208,3 +208,13 @@ ACCOUNT_LOGOUT_REDIRECT_URL = '/'
 GROQ_API_KEY = "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"
 
 SOCIALACCOUNT_ADAPTER = 'core.views.MySocialAccountAdapter'
+
+LOGIN_REDIRECT_URL = 'login_redirect' # Use the name of the URL for the view above
+
+ACCOUNT_AUTHENTICATION_METHOD = 'email'  # Use email instead of username
+ACCOUNT_EMAIL_REQUIRED = True            # Email is now mandatory
+ACCOUNT_UNIQUE_EMAIL = True             # No two users can have the same email
+ACCOUNT_USERNAME_REQUIRED = False       # You can now stop asking for a username
+
+ALLOWED_HOSTS = ['*']
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

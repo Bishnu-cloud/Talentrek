@@ -42,4 +42,7 @@ urlpatterns = [
     # AI Tools
     path('chatbot/', views.chatbot_view, name='chatbot'),
     path('mock-interview/', views.mock_interview_view, name='mock_interview'),
+
+    path('login-redirect/', views.login_redirect_view, name='login_redirect'),
 ]
+
