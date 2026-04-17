@@ -3,3 +3,4 @@ gunicorn
 python-dotenv
 django-allauth
 requests
+PyJWT
