@@ -29,8 +29,13 @@ urlpatterns = [
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 from django.contrib.auth.models import User
+
+
+
+# This runs every time the server starts/restarts
 try:
     if not User.objects.filter(username='admin_live').exists():
-        User.objects.create_superuser('admin_live', 'admin@test.com', 'YourPassword123')
-except:
-    pass
+        User.objects.create_superuser('admin_live', 'admin@talentrek.com', 'LivePass123!')
+        print("✅ SUCCESS: Live Admin 'admin_live' created.")
+except Exception as e:
+    print(f"Admin creation check: {e}")
