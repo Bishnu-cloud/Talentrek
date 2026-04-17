@@ -2,3 +2,4 @@ Django
 gunicorn
 python-dotenv
 django-allauth
+requests
