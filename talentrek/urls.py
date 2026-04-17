@@ -27,3 +27,10 @@ urlpatterns = [
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+from django.contrib.auth.models import User
+try:
+    if not User.objects.filter(username='admin_live').exists():
+        User.objects.create_superuser('admin_live', 'admin@test.com', 'YourPassword123')
+except:
+    pass
