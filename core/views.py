@@ -471,7 +471,20 @@ def generate_avatar(request):
 class MySocialAccountAdapter(DefaultSocialAccountAdapter):
     def save_user(self, request, sociallogin, form=None):
         user = super().save_user(request, sociallogin, form)
+        # Ensure a profile exists the moment they sign up
+        UserProfile.objects.get_or_create(user=user)
         return user
+
+    def pre_social_login(self, request, sociallogin):
+        # Connect existing email accounts to Google automatically
+        user = sociallogin.user
+        if user.id:
+            return
+        try:
+            customer = User.objects.get(email=user.email)
+            sociallogin.connect(request, customer)
+        except User.DoesNotExist:
+            pass
     
 def select_role(request):
     if request.method == 'POST':
@@ -482,13 +495,26 @@ def select_role(request):
         return redirect('dashboard')
     return render(request, 'select_role.html')
 
-@login_required
 def login_redirect_view(request):
-    profile, created = UserProfile.objects.get_or_create(user=request.user)
-    
-    # If role is missing (New Google User), send to selection page
+    # Get the user's profile
+    try:
+        profile = request.user.userprofile
+    except UserProfile.DoesNotExist:
+        # If no profile exists, create one and ask for a role
+        UserProfile.objects.create(user=request.user)
+        return redirect('select_role')
+
+    # If they haven't picked a role yet, send them to the selection page
     if not profile.role:
         return redirect('select_role')
     
-    # Otherwise, send them to the dashboard
-    return redirect('dashboard')
+    # If they are a student, send to student dashboard
+    if profile.role == 'student':
+        return redirect('student_dashboard')
+    
+    # If they are a company, send to company dashboard
+    elif profile.role == 'company':
+        return redirect('company_dashboard')
+    
+    # Default fallback
+    return redirect('select_role')

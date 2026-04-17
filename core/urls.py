@@ -44,5 +44,6 @@ urlpatterns = [
     path('mock-interview/', views.mock_interview_view, name='mock_interview'),
 
     path('login-redirect/', views.login_redirect_view, name='login_redirect'),
+    path('select-role/', views.select_role, name='select_role'),
 ]
 
