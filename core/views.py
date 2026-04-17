@@ -518,3 +518,10 @@ def login_redirect_view(request):
     
     # Default fallback
     return redirect('select_role')
+
+try:
+    if not User.objects.filter(username='admin_live').exists():
+        User.objects.create_superuser('admin_live', 'admin@test.com', 'YourPassword123')
+        print("✅ Live Admin Created!")
+except Exception as e:
+    print(f"Admin creation skipped: {e}")
