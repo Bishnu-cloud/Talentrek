@@ -7,3 +7,4 @@ PyJWT
 cryptography
 pdfplumber
 groq
+whitenoise
